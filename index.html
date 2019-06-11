@@ -64,7 +64,12 @@
                 return data ;
             }
     
-            getdata().then( data => data.result ).then( lists => {
+            getdata().then( data => data.result )
+            .then( lists => {
+                lists.sort(function(a, b){return b.id - a.id}) ;
+                return lists ;
+            })
+            .then( lists => {
                 lists.map( (list, i) => {
                     if (i==3) 
                     console.log(list) ;
