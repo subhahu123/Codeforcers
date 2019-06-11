@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,43 +10,61 @@
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    
+
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-    ​<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    ​
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
+<style>
+    html,
+    head body {
+        margin: 0;
+        padding: 0;
+    }
+</style>
 
 
 <body>
-        <nav class="navbar navbar-inverse">
-                <div class="container-fluid">
-                  <div class="navbar-header">
+    <div id="navbar">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
                     <a class="navbar-brand" href="#">Codeforcer</a>
-                  </div>
-                  <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">Page 1</a></li>
-                    <li><a href="#">Page 2</a></li>
-                  </ul>
-                  <ul class="nav navbar-nav navbar-right">
+                </div>
+                <ul class="nav navbar-nav navbar-right">
                     <li><a href="#"><span class="glyphicon glyphicon-user"></span> Blogs </a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Users </a></li>
-                  </ul>
-                </div>
-              </nav> 
-
-
-    <div class="container">
-        <h1 class="text-center"> Codeforces contest list </h1> 
-        <br>
-        <ol>
-            <div style="text-align: center">
-                <br>
-                <i class="fa fa-circle-o-notch fa-spin" style="font-size:36px;"></i>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="#">Contests</a></li>
+                    <li><a href="#">Problems</a></li>
+                    <li><a href="#">Solutions</a></li>
+                    <li><a href="#">Ratings</a></li>
+                </ul>
             </div>
-        </ol>
+        </nav>
+    </div>
+
+
+    <div class="container-fluid" style="margin-top:50px">
+        <div class="row" style="display:flex;">
+            <div class="col" style="width:60%;">
+                <h2 class="text-center"> Codeforces contest list </h2>
+                <br>
+                <ol>
+                    <div style="text-align: center">
+                        <br>
+                        <i class="fa fa-circle-o-notch fa-spin" style="font-size:36px;"></i>
+                    </div>
+                </ol>
+            </div>
+            <div class="col" style="width:40%;">
+                <h2 class="text-center"> Current Contests </h2>
+            </div>
+        </div>
     </div>
 
 
@@ -53,27 +72,27 @@
 
 
     <script>
-            let ol = document.querySelector('ol') ;
-            let content_list = "" ;
-            let contest_id = [] ;
-             async function getdata() {
-                let response = await fetch('https://codeforces.com/api/contest.list?gym=false')
-                let data = await response.json() ;
-                console.log(data) ;
-                console.log("subhahu") ;
-                return data ;
-            }
-    
-            getdata().then( data => data.result )
-            .then( lists => {
-                lists.sort(function(a, b){return b.id - a.id}) ;
-                return lists ;
+        let ol = document.querySelector('ol');
+        let content_list = "";
+        let contest_id = [];
+        async function getdata() {
+            let response = await fetch('https://codeforces.com/api/contest.list?gym=false')
+            let data = await response.json();
+            console.log(data);
+            console.log("subhahu");
+            return data;
+        }
+
+        getdata().then(data => data.result)
+            .then(lists => {
+                lists.sort(function (a, b) { return b.id - a.id });
+                return lists;
             })
-            .then( lists => {
-                lists.map( (list, i) => {
-                    if (i==3) 
-                    console.log(list) ;
-                    contest_id[i] = list.id ;
+            .then(lists => {
+                lists.map((list, i) => {
+                    if (i == 3)
+                        console.log(list);
+                    contest_id[i] = list.id;
                     content_list += `<div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h3 class="panel-title" style="float:right">
@@ -89,15 +108,16 @@
                                         </div>
                                         <div class="panel-body">${list.description}</div>
                                     </div>` ;
-                } )
-            } )
-            .then( () => {
-                ol.innerHTML = content_list ;
-            } )
-            
-    
-    
-        </script>
-    
+                })
+            })
+            .then(() => {
+                ol.innerHTML = content_list;
+            })
+
+
+
+    </script>
+
 </body>
+
 </html>
