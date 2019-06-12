@@ -30,42 +30,12 @@
 
 <body>
     <div id="navbar">
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Codeforcer</a>
-                </div>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Blogs </a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Users </a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="#">Contests</a></li>
-                    <li><a href="#">Problems</a></li>
-                    <li><a href="#">Solutions</a></li>
-                    <li><a href="#">Ratings</a></li>
-                </ul>
-            </div>
-        </nav>
+        
     </div>
 
 
-    <div class="container-fluid" style="margin-top:50px">
-        <div class="row" style="display:flex;">
-            <div class="col" style="width:60%;">
-                <h2 class="text-center"> Codeforces contest list </h2>
-                <br>
-                <ol>
-                    <div style="text-align: center">
-                        <br>
-                        <i class="fa fa-circle-o-notch fa-spin" style="font-size:36px;"></i>
-                    </div>
-                </ol>
-            </div>
-            <div class="col" style="width:40%;">
-                <h2 class="text-center"> Current Contests </h2>
-            </div>
-        </div>
+    <div class="container-fluid" id="contest_list" style="margin-top:50px">
+        
     </div>
 
 
@@ -73,50 +43,11 @@
 
 
     <script>
-        let ol = document.querySelector('ol');
-        let content_list = "";
-        let contest_id = [];
-        async function getdata() {
-            let response = await fetch('https://codeforces.com/api/contest.list?gym=false')
-            let data = await response.json();
-            console.log(data);
-            console.log("subhahu");
-            return data;
-        }
 
-        getdata().then(data => data.result)
-            .then(lists => {
-                lists.sort(function (a, b) { return b.id - a.id });
-                return lists;
-            })
-            .then(lists => {
-                lists.map((list, i) => {
-                    if (i == 3)
-                        console.log(list);
-                    contest_id[i] = list.id;
-                    content_list += `<div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title" style="float:right">
-                                                <b>
-                                                    <a> ${list.id} </a>
-                                                </b>
-                                            </h3>                                          
-                                            <h3 class="panel-title">
-                                                <b>
-                                                    <a> ${list.name} </a>
-                                                </b>
-                                            </h3>
-                                        </div>
-                                        <div class="panel-body">${list.description}</div>
-                                    </div>` ;
-                })
-            })
-            .then(() => {
-                ol.innerHTML = content_list;
-            })
+        $('#navbar').load('./navbar.html') ;
+        $('#contest_list').load('./contest_list.html') ;
 
-
-
+    
     </script>
 
 </body>
