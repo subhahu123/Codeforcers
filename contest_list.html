@@ -28,6 +28,13 @@
             return data;
         }
 
+         getlabel= function(phase)  {
+            if(phase == "FINISHED")
+                return "label-success" ;
+            else
+                return "label-primary" ;
+        }
+
         getdata().then(data => data.result)
             .then(lists => {
                 lists.sort(function (a, b) { return b.id - a.id });
@@ -51,12 +58,25 @@
                                                 </b>
                                             </h3>
                                         </div>
-                                        <div class="panel-body">${list.description}</div>
+                                        <div class="panel-body">                                   
+                                            <div style="float:right" >
+                                                <span class="label ${getlabel(list.phase)}" style="float:right;margin-left:10px"> ${list.phase.toLowerCase()} </span>
+                                                <span class="label label-info" style="float:right;"> ${list.type} </span>
+                                            </div>
+                                            <h4> 
+                                                <b> <button onclick="getproblems(${list.id})"> Problems </button> </b>
+                                            </h4>
+                                            <div>
+                                                
+                                            </div>
+                                        </div>
                                     </div>` ;
+                                      
+                                    
                 })
             })
-            .then(() => {
-                ol.innerHTML = content_list;
+            .then(() => {     
+                ol.innerHTML = content_list ;
                 console.log(contest_id.join(','))
             })
 </script>
