@@ -28,6 +28,20 @@
             return data;
         }
 
+        async function getdata_problems(id) {
+            let response = await fetch(`https://codeforces.com/api/contest.standings?contestId=${id}&from=1&count=1&showUnofficial=false`)
+            let data = await response.json();
+            console.log(data);
+            console.log("subhahu");
+            return data;
+        }
+
+        getproblems = function(id) {
+            getdata_problems(id)
+            .then( data => data.result )
+            .then( result => console.log(result.problems) )
+        }
+
          getlabel= function(phase)  {
             if(phase == "FINISHED")
                 return "label-success" ;
@@ -67,7 +81,7 @@
                                                 <b> <button onclick="getproblems(${list.id})"> Problems </button> </b>
                                             </h4>
                                             <div>
-                                                
+
                                             </div>
                                         </div>
                                     </div>` ;
