@@ -1,65 +1,85 @@
 <div class="row" style="display:flex;">
-        <div class="col" style="width:60%;">
-            <h2 class="text-center"> Codeforces contest list </h2>
-            <br>
-            <ol>
-                <div style="text-align: center">
-                    <br>
-                    <i class="fa fa-circle-o-notch fa-spin" style="font-size:36px;"></i>
-                </div>
-            </ol>
+    <div class="col" style="width:50%;">
+        <h2 class="text-center"> Codeforces contest list </h2>
+        <br>
+        <ol id="contests">
+            <div style="text-align: center">
+                <br>
+                <i class="fa fa-circle-o-notch fa-spin" style="font-size:36px;"></i>
+            </div>
+        </ol>
+    </div>
+    <div class="col" style="width:50%;">
+        <h2 class="text-center"> Problems </h2>
+        <br>
+        <div class="list-group" id="contest-problem">
+            <div style="text-align: center">
+                <br>
+                <i class="fa fa-circle-o-notch fa-spin" style="font-size:36px;"></i>
+            </div>
         </div>
-        <div class="col" style="width:40%;">
-            <h2 class="text-center"> Current Contests </h2>
-        </div>
+    </div>
 </div>
 
 
 
 <script>
-    let ol = document.querySelector('ol');
-        let content_list = "";
-        let contest_id = [];
-        async function getdata() {
-            let response = await fetch('https://codeforces.com/api/contest.list?gym=false')
-            let data = await response.json();
-            console.log(data);
-            console.log("subhahu");
-            return data;
-        }
+    let ol = document.querySelector('#contests');
+    let div = document.querySelector('#contest-problem');
+    let content_list = "";
+    let problem_list = "";
+    let contest_id = [];
+    async function getdata() {
+        let response = await fetch('https://codeforces.com/api/contest.list?gym=false')
+        let data = await response.json();
+        console.log(data);
+        console.log("subhahu");
+        return data;
+    }
 
-        async function getdata_problems(id) {
-            let response = await fetch(`https://codeforces.com/api/contest.standings?contestId=${id}&from=1&count=1&showUnofficial=false`)
-            let data = await response.json();
-            console.log(data);
-            console.log("subhahu");
-            return data;
-        }
+    async function getdata_problems(id) {
+        let response = await fetch(`https://codeforces.com/api/contest.standings?contestId=${id}&from=1&count=5&showUnofficial=true`)
+        let data = await response.json();
+        console.log(data);
+        console.log("subhahu");
+        return data;
+    }
 
-        getproblems = function(id) {
-            getdata_problems(id)
-            .then( data => data.result )
-            .then( result => console.log(result.problems) )
-        }
-
-         getlabel= function(phase)  {
-            if(phase == "FINISHED")
-                return "label-success" ;
-            else
-                return "label-primary" ;
-        }
-
-        getdata().then(data => data.result)
-            .then(lists => {
-                lists.sort(function (a, b) { return b.id - a.id });
-                return lists;
+    getproblems = function (id) {
+        getdata_problems(id)
+            .then(data => data.result)
+            .then(result => result.problems)
+            .then(problems => {
+                problem_list = "" ;
+                problems.map((problem) => {
+                    console.log(problem);
+                    problem_list += `<a href="#" class="list-group-item">${problem.name}</a>`;
+                })
             })
-            .then(lists => {
-                lists.map((list, i) => {
-                    if (i == 3)
-                        console.log(list);
-                    contest_id[i] = list.id;
-                    content_list += `<div class="panel panel-default">
+            .then(() => {
+            div.innerHTML = problem_list;
+            console.log(contest_id.join(','))
+        })
+    }
+
+    getlabel = function (phase) {
+        if (phase == "FINISHED")
+            return "label-success";
+        else
+            return "label-primary";
+    }
+
+    getdata().then(data => data.result)
+        .then(lists => {
+            lists.sort(function (a, b) { return b.id - a.id });
+            return lists;
+        })
+        .then(lists => {
+            lists.map((list, i) => {
+                if (i == 3)
+                    console.log(list);
+                contest_id[i] = list.id;
+                content_list += `<div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h3 class="panel-title" style="float:right">
                                                 <b>
@@ -78,19 +98,19 @@
                                                 <span class="label label-info" style="float:right;"> ${list.type} </span>
                                             </div>
                                             <h4> 
-                                                <b> <button onclick="getproblems(${list.id})"> Problems </button> </b>
+                                                <b> <button onclick="getproblems(${list.id})" class="btn"> Problems <span class="caret"></span></button> </b>
                                             </h4>
                                             <div>
 
                                             </div>
                                         </div>
                                     </div>` ;
-                                      
-                                    
-                })
+
+
             })
-            .then(() => {     
-                ol.innerHTML = content_list ;
-                console.log(contest_id.join(','))
-            })
+        })
+        .then(() => {
+            ol.innerHTML = content_list;
+            console.log(contest_id.join(','))
+        })
 </script>
